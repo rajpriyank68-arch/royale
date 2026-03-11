@@ -1,0 +1,1505 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Royale Hotel - Luxury Stays & Events</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1a1a2e; }
+        ::-webkit-scrollbar-thumb { background: #c9a96e; border-radius: 4px; }
+        
+        /* Hero section */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(26,26,46,0.85) 0%, rgba(22,33,62,0.7) 100%),
+                        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease forwards; }
+        .animate-fade-in { animation: fadeIn 0.6s ease forwards; }
+        .animate-slide-left { animation: slideInLeft 0.8s ease forwards; }
+        .animate-slide-right { animation: slideInRight 0.8s ease forwards; }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        
+        /* Gold gradient text */
+        .gold-text {
+            background: linear-gradient(135deg, #c9a96e, #f0d78c, #c9a96e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gold-shimmer {
+            background: linear-gradient(90deg, #c9a96e, #f0d78c, #c9a96e, #f0d78c);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+        
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(201, 169, 110, 0.15);
+        }
+        
+        /* Button styles */
+        .btn-gold {
+            background: linear-gradient(135deg, #c9a96e, #dbb978);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-gold:hover::before { left: 100%; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,169,110,0.4); }
+        
+        .btn-outline-gold {
+            border: 2px solid #c9a96e;
+            color: #c9a96e;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-gold:hover {
+            background: #c9a96e;
+            color: #1a1a2e;
+            transform: translateY(-2px);
+        }
+        
+        /* Gallery grid */
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-item img, .gallery-item video {
+            transition: transform 0.6s ease;
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .gallery-item:hover img, .gallery-item:hover video {
+            transform: scale(1.1);
+        }
+        .gallery-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(26,26,46,0.8) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex; align-items: flex-end; padding: 20px;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        
+        /* Modal */
+        .modal-overlay {
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Section divider */
+        .section-divider {
+            width: 80px; height: 3px;
+            background: linear-gradient(90deg, #c9a96e, #f0d78c);
+            margin: 0 auto;
+        }
+        
+        /* Navigation */
+        .nav-glass {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+        }
+        .nav-scrolled {
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        /* Input focus */
+        .input-focus:focus {
+            border-color: #c9a96e;
+            box-shadow: 0 0 0 3px rgba(201,169,110,0.2);
+        }
+        
+        /* Tab active */
+        .tab-active {
+            background: linear-gradient(135deg, #c9a96e, #dbb978);
+            color: #1a1a2e;
+        }
+        
+        /* Booking card */
+        .booking-card {
+            background: linear-gradient(135deg, rgba(26,26,46,0.95), rgba(22,33,62,0.95));
+            border: 1px solid rgba(201,169,110,0.2);
+        }
+        
+        /* Toast notification */
+        .toast {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        /* Lightbox */
+        .lightbox-active { overflow: hidden; }
+        
+        /* Stats counter */
+        .stat-card {
+            background: rgba(201, 169, 110, 0.1);
+            border: 1px solid rgba(201, 169, 110, 0.2);
+        }
+        
+        /* Occasion cards */
+        .occasion-card {
+            background: linear-gradient(135deg, rgba(26,26,46,0.9), rgba(22,33,62,0.9));
+            border: 1px solid rgba(201,169,110,0.15);
+        }
+        .occasion-card:hover {
+            border-color: rgba(201,169,110,0.5);
+        }
+        
+        /* Admin panel */
+        .admin-sidebar {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .status-badge-pending { background: #fbbf24; color: #1a1a2e; }
+        .status-badge-confirmed { background: #34d399; color: #1a1a2e; }
+        .status-badge-cancelled { background: #f87171; color: white; }
+    </style>
+</head>
+<body class="bg-[#0f0f1a] text-white">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 nav-glass transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a96e] to-[#f0d78c] flex items-center justify-center">
+                        <i class="fas fa-crown text-[#1a1a2e] text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-playfair text-xl font-bold gold-text">Grand Royale</h1>
+                        <p class="text-[10px] tracking-[3px] text-gray-400 uppercase">Hotel & Resort</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-300 hover:text-[#c9a96e] transition-colors text-sm font-medium">Home</a>
+                    <a href="#gallery" class="nav-link text-gray-300 hover:text-[#c9a96e] transition-colors text-sm font-medium">Gallery</a>
+                    <a href="#occasions" class="nav-link text-gray-300 hover:text-[#c9a96e] transition-colors text-sm font-medium">Occasions</a>
+                    <a href="#booking" class="nav-link text-gray-300 hover:text-[#c9a96e] transition-colors text-sm font-medium">Book Now</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-[#c9a96e] transition-colors text-sm font-medium">Contact</a>
+                    <button onclick="showAdminLogin()" class="btn-outline-gold px-5 py-2 rounded-full text-sm font-medium">
+                        <i class="fas fa-lock mr-2"></i>Admin
+                    </button>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-[#c9a96e] text-2xl">
+                    <i id="menuIcon" class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-[#1a1a2e] border-t border-[#c9a96e]/20 pb-4">
+            <a href="#home" onclick="toggleMobileMenu()" class="block px-6 py-3 text-gray-300 hover:text-[#c9a96e] hover:bg-white/5">Home</a>
+            <a href="#gallery" onclick="toggleMobileMenu()" class="block px-6 py-3 text-gray-300 hover:text-[#c9a96e] hover:bg-white/5">Gallery</a>
+            <a href="#occasions" onclick="toggleMobileMenu()" class="block px-6 py-3 text-gray-300 hover:text-[#c9a96e] hover:bg-white/5">Occasions</a>
+            <a href="#booking" onclick="toggleMobileMenu()" class="block px-6 py-3 text-gray-300 hover:text-[#c9a96e] hover:bg-white/5">Book Now</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block px-6 py-3 text-gray-300 hover:text-[#c9a96e] hover:bg-white/5">Contact</a>
+            <div class="px-6 pt-3">
+                <button onclick="showAdminLogin(); toggleMobileMenu();" class="btn-outline-gold px-5 py-2 rounded-full text-sm font-medium w-full">
+                    <i class="fas fa-lock mr-2"></i>Admin Panel
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content (Customer View) -->
+    <div id="customerView">
+        
+        <!-- Hero Section -->
+        <section id="home" class="hero-bg min-h-screen flex items-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0f0f1a]"></div>
+            <!-- Floating particles -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="absolute top-20 left-10 w-2 h-2 bg-[#c9a96e] rounded-full opacity-30" style="animation: pulse 3s infinite;"></div>
+                <div class="absolute top-40 right-20 w-3 h-3 bg-[#c9a96e] rounded-full opacity-20" style="animation: pulse 4s infinite 1s;"></div>
+                <div class="absolute bottom-40 left-1/4 w-2 h-2 bg-[#f0d78c] rounded-full opacity-25" style="animation: pulse 5s infinite 2s;"></div>
+                <div class="absolute top-1/3 right-1/3 w-1 h-1 bg-[#c9a96e] rounded-full opacity-40" style="animation: pulse 3.5s infinite 0.5s;"></div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <p class="text-[#c9a96e] tracking-[6px] text-sm uppercase mb-6 animate-fade-in-up">Welcome to Luxury</p>
+                <h1 class="font-playfair text-5xl sm:text-6xl md:text-8xl font-bold mb-6 animate-fade-in-up delay-1">
+                    <span class="gold-shimmer">Grand Royale</span>
+                </h1>
+                <p class="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 animate-fade-in-up delay-2 leading-relaxed">
+                    Experience unparalleled luxury and create unforgettable memories. From grand weddings to intimate celebrations, we make every occasion extraordinary.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-3">
+                    <a href="#booking" class="btn-gold px-10 py-4 rounded-full text-[#1a1a2e] font-semibold text-lg">
+                        <i class="fas fa-calendar-check mr-2"></i>Book Your Occasion
+                    </a>
+                    <a href="#gallery" class="btn-outline-gold px-10 py-4 rounded-full font-semibold text-lg">
+                        <i class="fas fa-images mr-2"></i>View Gallery
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 animate-fade-in-up delay-4">
+                    <div class="stat-card rounded-xl p-4">
+                        <div class="text-3xl font-bold gold-text font-playfair">500+</div>
+                        <div class="text-gray-400 text-sm">Events Hosted</div>
+                    </div>
+                    <div class="stat-card rounded-xl p-4">
+                        <div class="text-3xl font-bold gold-text font-playfair">50+</div>
+                        <div class="text-gray-400 text-sm">Luxury Rooms</div>
+                    </div>
+                    <div class="stat-card rounded-xl p-4">
+                        <div class="text-3xl font-bold gold-text font-playfair">4.9</div>
+                        <div class="text-gray-400 text-sm">Guest Rating</div>
+                    </div>
+                    <div class="stat-card rounded-xl p-4">
+                        <div class="text-3xl font-bold gold-text font-playfair">15+</div>
+                        <div class="text-gray-400 text-sm">Years Experience</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <i class="fas fa-chevron-down text-[#c9a96e] text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-24 bg-[#0f0f1a]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <p class="text-[#c9a96e] tracking-[4px] text-sm uppercase mb-4">Our Gallery</p>
+                    <h2 class="font-playfair text-4xl sm:text-5xl font-bold mb-4">
+                        <span class="gold-text">Moments</span> of Elegance
+                    </h2>
+                    <div class="section-divider mt-6 mb-6"></div>
+                    <p class="text-gray-400 max-w-xl mx-auto">Explore our exquisite venues, luxurious rooms, and the magical events we've brought to life.</p>
+                </div>
+                
+                <!-- Gallery Filter -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12">
+                    <button onclick="filterGallery('all')" class="gallery-filter tab-active px-6 py-2 rounded-full text-sm font-medium transition-all" data-filter="all">All</button>
+                    <button onclick="filterGallery('rooms')" class="gallery-filter px-6 py-2 rounded-full text-sm font-medium bg-white/5 text-gray-300 hover:text-[#c9a96e] transition-all" data-filter="rooms">Rooms</button>
+                    <button onclick="filterGallery('events')" class="gallery-filter px-6 py-2 rounded-full text-sm font-medium bg-white/5 text-gray-300 hover:text-[#c9a96e] transition-all" data-filter="events">Events</button>
+                    <button onclick="filterGallery('dining')" class="gallery-filter px-6 py-2 rounded-full text-sm font-medium bg-white/5 text-gray-300 hover:text-[#c9a96e] transition-all" data-filter="dining">Dining</button>
+                    <button onclick="filterGallery('videos')" class="gallery-filter px-6 py-2 rounded-full text-sm font-medium bg-white/5 text-gray-300 hover:text-[#c9a96e] transition-all" data-filter="videos">Videos</button>
+                </div>
+                
+                <!-- Gallery Grid -->
+                <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Gallery items will be populated by JS -->
+                </div>
+                
+                <div id="emptyGallery" class="hidden text-center py-20">
+                    <i class="fas fa-images text-6xl text-gray-600 mb-4"></i>
+                    <p class="text-gray-400 text-lg">No media added yet. Check back soon!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Occasions Section -->
+        <section id="occasions" class="py-24 bg-gradient-to-b from-[#0f0f1a] via-[#16213e] to-[#0f0f1a]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <p class="text-[#c9a96e] tracking-[4px] text-sm uppercase mb-4">Our Services</p>
+                    <h2 class="font-playfair text-4xl sm:text-5xl font-bold mb-4">
+                        Celebrate Every <span class="gold-text">Occasion</span>
+                    </h2>
+                    <div class="section-divider mt-6 mb-6"></div>
+                    <p class="text-gray-400 max-w-xl mx-auto">From intimate gatherings to grand celebrations, we provide the perfect setting for your special moments.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Wedding -->
+                    <div class="occasion-card card-hover rounded-2xl overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" class="w-full h-full object-cover" alt="Wedding">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                    <i class="fas fa-ring text-[#c9a96e]"></i>
+                                </div>
+                                <h3 class="font-playfair text-xl font-bold">Wedding</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Make your dream wedding come true with our luxurious ballrooms, expert planners, and exquisite catering.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[#c9a96e] font-semibold">From $5,000</span>
+                                <a href="#booking" class="text-[#c9a96e] hover:text-[#f0d78c] text-sm"><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Birthday -->
+                    <div class="occasion-card card-hover rounded-2xl overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80" class="w-full h-full object-cover" alt="Birthday">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                    <i class="fas fa-birthday-cake text-[#c9a96e]"></i>
+                                </div>
+                                <h3 class="font-playfair text-xl font-bold">Birthday Party</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Celebrate milestones with themed decorations, live entertainment, and personalized birthday packages.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[#c9a96e] font-semibold">From $1,500</span>
+                                <a href="#booking" class="text-[#c9a96e] hover:text-[#f0d78c] text-sm"><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Corporate -->
+                    <div class="occasion-card card-hover rounded-2xl overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&q=80" class="w-full h-full object-cover" alt="Corporate">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                    <i class="fas fa-briefcase text-[#c9a96e]"></i>
+                                </div>
+                                <h3 class="font-playfair text-xl font-bold">Corporate Event</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Professional conference halls with cutting-edge AV equipment, catering, and dedicated event coordinators.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[#c9a96e] font-semibold">From $3,000</span>
+                                <a href="#booking" class="text-[#c9a96e] hover:text-[#f0d78c] text-sm"><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Anniversary -->
+                    <div class="occasion-card card-hover rounded-2xl overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80" class="w-full h-full object-cover" alt="Anniversary">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                    <i class="fas fa-heart text-[#c9a96e]"></i>
+                                </div>
+                                <h3 class="font-playfair text-xl font-bold">Anniversary</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Rekindle the romance with intimate dining setups, spa packages, and celebration arrangements.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[#c9a96e] font-semibold">From $2,000</span>
+                                <a href="#booking" class="text-[#c9a96e] hover:text-[#f0d78c] text-sm"><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Engagement -->
+                    <div class="occasion-card card-hover rounded-2xl overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=600&q=80" class="w-full h-full object-cover" alt="Engagement">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                    <i class="fas fa-gem text-[#c9a96e]"></i>
+                                </div>
+                                <h3 class="font-playfair text-xl font-bold">Engagement</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Pop the question in style or celebrate your engagement with our specially designed romantic packages.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[#c9a96e] font-semibold">From $2,500</span>
+                                <a href="#booking" class="text-[#c9a96e] hover:text-[#f0d78c] text-sm"><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Custom -->
+                    <div class="occasion-card card-hover rounded-2xl overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80" class="w-full h-full object-cover" alt="Custom Event">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                    <i class="fas fa-star text-[#c9a96e]"></i>
+                                </div>
+                                <h3 class="font-playfair text-xl font-bold">Custom Event</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Have something unique in mind? Our team will work with you to create the perfect bespoke event.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[#c9a96e] font-semibold">Custom Pricing</span>
+                                <a href="#booking" class="text-[#c9a96e] hover:text-[#f0d78c] text-sm"><i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking" class="py-24 bg-[#0f0f1a] relative">
+            <div class="absolute inset-0 opacity-5">
+                <div class="absolute top-0 left-0 w-full h-full" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23c9a96e\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <p class="text-[#c9a96e] tracking-[4px] text-sm uppercase mb-4">Reservation</p>
+                    <h2 class="font-playfair text-4xl sm:text-5xl font-bold mb-4">
+                        Book Your <span class="gold-text">Occasion</span>
+                    </h2>
+                    <div class="section-divider mt-6 mb-6"></div>
+                    <p class="text-gray-400 max-w-xl mx-auto">Fill in the details below and our team will get back to you within 24 hours to confirm your booking.</p>
+                </div>
+                
+                <div class="booking-card rounded-3xl p-8 sm:p-12">
+                    <form id="bookingForm" onsubmit="submitBooking(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Full Name -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-user mr-2 text-[#c9a96e]"></i>Full Name *
+                                </label>
+                                <input type="text" id="bookName" required placeholder="John Doe"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                            </div>
+                            
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-envelope mr-2 text-[#c9a96e]"></i>Email *
+                                </label>
+                                <input type="email" id="bookEmail" required placeholder="john@example.com"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                            </div>
+                            
+                            <!-- Phone -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-phone mr-2 text-[#c9a96e]"></i>Phone Number *
+                                </label>
+                                <input type="tel" id="bookPhone" required placeholder="+1 (555) 000-0000"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                            </div>
+                            
+                            <!-- Occasion Type -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-glass-cheers mr-2 text-[#c9a96e]"></i>Occasion Type *
+                                </label>
+                                <select id="bookOccasion" required
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white input-focus focus:outline-none transition-all">
+                                    <option value="" class="bg-[#1a1a2e]">Select occasion</option>
+                                    <option value="Wedding" class="bg-[#1a1a2e]">Wedding</option>
+                                    <option value="Birthday Party" class="bg-[#1a1a2e]">Birthday Party</option>
+                                    <option value="Corporate Event" class="bg-[#1a1a2e]">Corporate Event</option>
+                                    <option value="Anniversary" class="bg-[#1a1a2e]">Anniversary</option>
+                                    <option value="Engagement" class="bg-[#1a1a2e]">Engagement</option>
+                                    <option value="Custom Event" class="bg-[#1a1a2e]">Custom Event</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Event Date -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-calendar mr-2 text-[#c9a96e]"></i>Event Date *
+                                </label>
+                                <input type="date" id="bookDate" required
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white input-focus focus:outline-none transition-all">
+                            </div>
+                            
+                            <!-- Number of Guests -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">
+                                    <i class="fas fa-users mr-2 text-[#c9a96e]"></i>Number of Guests *
+                                </label>
+                                <input type="number" id="bookGuests" required min="1" placeholder="100"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                            </div>
+                        </div>
+                        
+                        <!-- Special Requests -->
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-comment mr-2 text-[#c9a96e]"></i>Special Requests
+                            </label>
+                            <textarea id="bookRequests" rows="4" placeholder="Tell us about your vision for the event..."
+                                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all resize-none"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-gold w-full mt-8 py-4 rounded-xl text-[#1a1a2e] font-bold text-lg">
+                            <i class="fas fa-paper-plane mr-2"></i>Submit Booking Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 bg-gradient-to-b from-[#0f0f1a] to-[#16213e]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <p class="text-[#c9a96e] tracking-[4px] text-sm uppercase mb-4">Get In Touch</p>
+                    <h2 class="font-playfair text-4xl sm:text-5xl font-bold mb-4">
+                        Contact <span class="gold-text">Us</span>
+                    </h2>
+                    <div class="section-divider mt-6"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center p-8 occasion-card rounded-2xl card-hover">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-[#c9a96e]/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-map-marker-alt text-[#c9a96e] text-2xl"></i>
+                        </div>
+                        <h3 class="font-playfair text-xl font-bold mb-2">Location</h3>
+                        <p class="text-gray-400">123 Royal Avenue<br>Beverly Hills, CA 90210</p>
+                    </div>
+                    
+                    <div class="text-center p-8 occasion-card rounded-2xl card-hover">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-[#c9a96e]/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-phone-alt text-[#c9a96e] text-2xl"></i>
+                        </div>
+                        <h3 class="font-playfair text-xl font-bold mb-2">Phone</h3>
+                        <p class="text-gray-400">+1 (555) 123-4567<br>+1 (555) 987-6543</p>
+                    </div>
+                    
+                    <div class="text-center p-8 occasion-card rounded-2xl card-hover">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-[#c9a96e]/20 flex items-center justify-center mb-4">
+                            <i class="fas fa-envelope text-[#c9a96e] text-2xl"></i>
+                        </div>
+                        <h3 class="font-playfair text-xl font-bold mb-2">Email</h3>
+                        <p class="text-gray-400">info@grandroyale.com<br>events@grandroyale.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-[#0a0a14] py-12 border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a96e] to-[#f0d78c] flex items-center justify-center">
+                            <i class="fas fa-crown text-[#1a1a2e] text-lg"></i>
+                        </div>
+                        <span class="font-playfair text-xl font-bold gold-text">Grand Royale</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#c9a96e] hover:bg-[#c9a96e]/20 transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#c9a96e] hover:bg-[#c9a96e]/20 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#c9a96e] hover:bg-[#c9a96e]/20 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#c9a96e] hover:bg-[#c9a96e]/20 transition-all">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    
+                    <p class="text-gray-500 text-sm">&copy; 2024 Grand Royale Hotel. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-overlay absolute inset-0" onclick="hideAdminLogin()"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+            <div class="booking-card rounded-3xl p-8 sm:p-10 w-full max-w-md animate-fade-in-up">
+                <div class="text-center mb-8">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-[#c9a96e]/20 flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-[#c9a96e] text-3xl"></i>
+                    </div>
+                    <h2 class="font-playfair text-2xl font-bold">Admin Access</h2>
+                    <p class="text-gray-400 text-sm mt-2">Enter the admin password to continue</p>
+                </div>
+                
+                <div class="relative mb-6">
+                    <input type="password" id="adminPassword" placeholder="Enter admin password"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-gray-500 input-focus focus:outline-none transition-all pr-12"
+                        onkeypress="if(event.key==='Enter')verifyAdmin()">
+                    <button onclick="togglePasswordVisibility()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#c9a96e]">
+                        <i id="passwordEye" class="fas fa-eye"></i>
+                    </button>
+                </div>
+                
+                <p id="loginError" class="text-red-400 text-sm mb-4 hidden">
+                    <i class="fas fa-exclamation-circle mr-1"></i>Incorrect password. Please try again.
+                </p>
+                
+                <button onclick="verifyAdmin()" class="btn-gold w-full py-4 rounded-xl text-[#1a1a2e] font-bold text-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                </button>
+                
+                <button onclick="hideAdminLogin()" class="w-full mt-3 py-3 text-gray-400 hover:text-white text-sm transition-colors">
+                    Cancel
+                </button>
+                
+                <p class="text-center text-gray-500 text-xs mt-4">
+                    <i class="fas fa-info-circle mr-1"></i>Default password: <span class="text-[#c9a96e]">admin123</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="fixed inset-0 z-[90] hidden bg-[#0f0f1a]">
+        <!-- Admin Header -->
+        <div class="nav-glass fixed w-full z-50">
+            <div class="max-w-full px-4 sm:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#c9a96e] to-[#f0d78c] flex items-center justify-center">
+                            <i class="fas fa-crown text-[#1a1a2e] text-sm"></i>
+                        </div>
+                        <span class="font-playfair text-lg font-bold gold-text">Admin Dashboard</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="hidden sm:block text-gray-400 text-sm">
+                            <i class="fas fa-user-shield mr-1 text-[#c9a96e]"></i>Administrator
+                        </span>
+                        <button onclick="logoutAdmin()" class="btn-outline-gold px-4 py-2 rounded-full text-xs font-medium">
+                            <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Content -->
+        <div class="pt-16 h-full overflow-y-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-8 py-8">
+                <!-- Admin Tabs -->
+                <div class="flex flex-wrap gap-3 mb-8">
+                    <button onclick="switchAdminTab('bookings')" id="tabBookings" class="admin-tab tab-active px-6 py-3 rounded-xl text-sm font-medium transition-all">
+                        <i class="fas fa-calendar-check mr-2"></i>Bookings
+                    </button>
+                    <button onclick="switchAdminTab('media')" id="tabMedia" class="admin-tab px-6 py-3 rounded-xl text-sm font-medium bg-white/5 text-gray-300 hover:text-[#c9a96e] transition-all">
+                        <i class="fas fa-photo-video mr-2"></i>Manage Media
+                    </button>
+                    <button onclick="switchAdminTab('stats')" id="tabStats" class="admin-tab px-6 py-3 rounded-xl text-sm font-medium bg-white/5 text-gray-300 hover:text-[#c9a96e] transition-all">
+                        <i class="fas fa-chart-bar mr-2"></i>Statistics
+                    </button>
+                </div>
+                
+                <!-- Bookings Tab -->
+                <div id="adminBookings" class="admin-content">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                        <h2 class="font-playfair text-2xl font-bold">
+                            <span class="gold-text">Customer Bookings</span>
+                        </h2>
+                        <div class="flex items-center gap-3">
+                            <select id="filterStatus" onchange="renderBookings()" class="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none">
+                                <option value="all" class="bg-[#1a1a2e]">All Status</option>
+                                <option value="Pending" class="bg-[#1a1a2e]">Pending</option>
+                                <option value="Confirmed" class="bg-[#1a1a2e]">Confirmed</option>
+                                <option value="Cancelled" class="bg-[#1a1a2e]">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="bookingsList" class="space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                    
+                    <div id="noBookings" class="hidden text-center py-20">
+                        <i class="fas fa-inbox text-6xl text-gray-600 mb-4"></i>
+                        <p class="text-gray-400 text-lg">No bookings yet</p>
+                        <p class="text-gray-500 text-sm">Bookings will appear here when customers submit them.</p>
+                    </div>
+                </div>
+                
+                <!-- Media Tab -->
+                <div id="adminMedia" class="admin-content hidden">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                        <h2 class="font-playfair text-2xl font-bold">
+                            <span class="gold-text">Manage Gallery Media</span>
+                        </h2>
+                    </div>
+                    
+                    <!-- Add Media Form -->
+                    <div class="booking-card rounded-2xl p-6 sm:p-8 mb-8">
+                        <h3 class="text-lg font-semibold mb-6">
+                            <i class="fas fa-plus-circle text-[#c9a96e] mr-2"></i>Add New Media
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Media Type</label>
+                                <select id="mediaType"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white input-focus focus:outline-none transition-all">
+                                    <option value="image" class="bg-[#1a1a2e]">Photo</option>
+                                    <option value="video" class="bg-[#1a1a2e]">Video (YouTube URL)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Category</label>
+                                <select id="mediaCategory"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white input-focus focus:outline-none transition-all">
+                                    <option value="rooms" class="bg-[#1a1a2e]">Rooms</option>
+                                    <option value="events" class="bg-[#1a1a2e]">Events</option>
+                                    <option value="dining" class="bg-[#1a1a2e]">Dining</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                                <input type="text" id="mediaTitle" placeholder="e.g., Luxury Suite"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-2" id="mediaUrlLabel">Image URL</label>
+                                <input type="url" id="mediaUrl" placeholder="https://..."
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-300 mb-2">Description (optional)</label>
+                            <input type="text" id="mediaDesc" placeholder="Brief description..."
+                                class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 input-focus focus:outline-none transition-all">
+                        </div>
+                        <button onclick="addMedia()" class="btn-gold mt-6 px-8 py-3 rounded-xl text-[#1a1a2e] font-semibold">
+                            <i class="fas fa-cloud-upload-alt mr-2"></i>Add to Gallery
+                        </button>
+                    </div>
+                    
+                    <!-- Media List -->
+                    <h3 class="text-lg font-semibold mb-4">
+                        <i class="fas fa-images text-[#c9a96e] mr-2"></i>Current Media (<span id="mediaCount">0</span>)
+                    </h3>
+                    <div id="mediaList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div id="noMedia" class="hidden text-center py-16">
+                        <i class="fas fa-photo-video text-6xl text-gray-600 mb-4"></i>
+                        <p class="text-gray-400 text-lg">No media added yet</p>
+                        <p class="text-gray-500 text-sm">Use the form above to add photos and videos to the gallery.</p>
+                    </div>
+                </div>
+                
+                <!-- Stats Tab -->
+                <div id="adminStats" class="admin-content hidden">
+                    <h2 class="font-playfair text-2xl font-bold mb-6">
+                        <span class="gold-text">Dashboard Statistics</span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="booking-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                                    <i class="fas fa-calendar-check text-blue-400 text-xl"></i>
+                                </div>
+                                <span class="text-green-400 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i>12%</span>
+                            </div>
+                            <p class="text-3xl font-bold" id="statTotal">0</p>
+                            <p class="text-gray-400 text-sm">Total Bookings</p>
+                        </div>
+                        
+                        <div class="booking-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                                    <i class="fas fa-clock text-yellow-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold" id="statPending">0</p>
+                            <p class="text-gray-400 text-sm">Pending</p>
+                        </div>
+                        
+                        <div class="booking-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                                    <i class="fas fa-check-circle text-green-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold" id="statConfirmed">0</p>
+                            <p class="text-gray-400 text-sm">Confirmed</p>
+                        </div>
+                        
+                        <div class="booking-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                                    <i class="fas fa-images text-purple-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-bold" id="statMedia">0</p>
+                            <p class="text-gray-400 text-sm">Gallery Items</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Occasion breakdown -->
+                    <div class="booking-card rounded-2xl p-6 sm:p-8">
+                        <h3 class="text-lg font-semibold mb-6">
+                            <i class="fas fa-chart-pie text-[#c9a96e] mr-2"></i>Bookings by Occasion Type
+                        </h3>
+                        <div id="occasionBreakdown" class="space-y-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeLightbox()"></div>
+        <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+            <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-3xl hover:text-[#c9a96e] transition-colors z-20">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="lightboxContent" class="max-w-4xl w-full max-h-[90vh]">
+                <!-- Image or video displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-[200] space-y-3"></div>
+
+    <script>
+        // ============================================
+        // DATA MANAGEMENT (localStorage)
+        // ============================================
+        const ADMIN_PASSWORD = 'admin123';
+        
+        function getData(key) {
+            try {
+                return JSON.parse(localStorage.getItem(key)) || [];
+            } catch { return []; }
+        }
+        
+        function setData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+        
+        // Initialize default gallery if empty
+        function initDefaultGallery() {
+            const media = getData('hotelMedia');
+            if (media.length === 0) {
+                const defaults = [
+                    { id: Date.now()+1, type: 'image', category: 'rooms', title: 'Presidential Suite', url: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80', desc: 'Our finest luxury suite with panoramic city views', date: new Date().toISOString() },
+                    { id: Date.now()+2, type: 'image', category: 'rooms', title: 'Deluxe Ocean Room', url: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80', desc: 'Wake up to stunning ocean views every morning', date: new Date().toISOString() },
+                    { id: Date.now()+3, type: 'image', category: 'events', title: 'Grand Ballroom', url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&q=80', desc: 'Perfect for weddings and grand celebrations', date: new Date().toISOString() },
+                    { id: Date.now()+4, type: 'image', category: 'events', title: 'Wedding Setup', url: 'https://images.unsplash.com/photo-1478146059778-26028b07395a?w=800&q=80', desc: 'Elegant wedding decorations and arrangements', date: new Date().toISOString() },
+                    { id: Date.now()+5, type: 'image', category: 'dining', title: 'Fine Dining', url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80', desc: 'Exquisite cuisine prepared by world-class chefs', date: new Date().toISOString() },
+                    { id: Date.now()+6, type: 'image', category: 'dining', title: 'Rooftop Restaurant', url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80', desc: 'Dine under the stars with breathtaking views', date: new Date().toISOString() },
+                    { id: Date.now()+7, type: 'image', category: 'rooms', title: 'Royal Bathroom', url: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80', desc: 'Marble bathrooms with luxury amenities', date: new Date().toISOString() },
+                    { id: Date.now()+8, type: 'image', category: 'events', title: 'Conference Hall', url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80', desc: 'State-of-the-art conference facilities', date: new Date().toISOString() },
+                    { id: Date.now()+9, type: 'image', category: 'rooms', title: 'Infinity Pool', url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80', desc: 'Relax by our stunning infinity pool', date: new Date().toISOString() },
+                ];
+                setData('hotelMedia', defaults);
+            }
+        }
+        
+        initDefaultGallery();
+        
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fas fa-bars';
+            } else {
+                icon.className = 'fas fa-times';
+            }
+        }
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // ============================================
+        // GALLERY
+        // ============================================
+        let currentFilter = 'all';
+        
+        function renderGallery() {
+            const media = getData('hotelMedia');
+            const grid = document.getElementById('galleryGrid');
+            const empty = document.getElementById('emptyGallery');
+            
+            let filtered = media;
+            if (currentFilter !== 'all') {
+                if (currentFilter === 'videos') {
+                    filtered = media.filter(m => m.type === 'video');
+                } else {
+                    filtered = media.filter(m => m.category === currentFilter);
+                }
+            }
+            
+            if (filtered.length === 0) {
+                grid.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            
+            grid.classList.remove('hidden');
+            empty.classList.add('hidden');
+            
+            grid.innerHTML = filtered.map((item, i) => {
+                if (item.type === 'video') {
+                    const videoId = extractYoutubeId(item.url);
+                    const thumbnail = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
+                    return `
+                        <div class="gallery-item h-64 card-hover" style="animation: fadeInUp 0.5s ease forwards; animation-delay: ${i * 0.1}s; opacity: 0;"
+                            onclick="openLightbox('video', '${item.url}')">
+                            <img src="${thumbnail}" alt="${item.title}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-16 h-16 rounded-full bg-[#c9a96e]/90 flex items-center justify-center">
+                                    <i class="fas fa-play text-[#1a1a2e] text-xl ml-1"></i>
+                                </div>
+                            </div>
+                            <div class="gallery-overlay">
+                                <div>
+                                    <p class="text-white font-semibold">${item.title}</p>
+                                    <p class="text-gray-300 text-sm">${item.desc || ''}</p>
+                                    <span class="inline-block mt-2 px-3 py-1 bg-[#c9a96e]/20 text-[#c9a96e] rounded-full text-xs">
+                                        <i class="fas fa-video mr-1"></i>Video
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="gallery-item h-64 card-hover" style="animation: fadeInUp 0.5s ease forwards; animation-delay: ${i * 0.1}s; opacity: 0;"
+                            onclick="openLightbox('image', '${item.url}')">
+                            <img src="${item.url}" alt="${item.title}" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div>
+                                    <p class="text-white font-semibold">${item.title}</p>
+                                    <p class="text-gray-300 text-sm">${item.desc || ''}</p>
+                                    <span class="inline-block mt-2 px-3 py-1 bg-[#c9a96e]/20 text-[#c9a96e] rounded-full text-xs capitalize">
+                                        <i class="fas fa-tag mr-1"></i>${item.category}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+        
+        function filterGallery(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.gallery-filter').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('bg-white/5', 'text-gray-300');
+            });
+            const activeBtn = document.querySelector(`.gallery-filter[data-filter="${filter}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active');
+                activeBtn.classList.remove('bg-white/5', 'text-gray-300');
+            }
+            renderGallery();
+        }
+        
+        function extractYoutubeId(url) {
+            const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?\s]+)/);
+            return match ? match[1] : null;
+        }
+        
+        // ============================================
+        // LIGHTBOX
+        // ============================================
+        function openLightbox(type, url) {
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightboxContent');
+            
+            if (type === 'image') {
+                content.innerHTML = `<img src="${url}" class="w-full max-h-[85vh] object-contain rounded-lg" alt="Gallery Image">`;
+            } else {
+                const videoId = extractYoutubeId(url);
+                if (videoId) {
+                    content.innerHTML = `<div class="aspect-video w-full"><iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" class="w-full h-full rounded-lg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+                } else {
+                    content.innerHTML = `<video src="${url}" controls autoplay class="w-full max-h-[85vh] rounded-lg"></video>`;
+                }
+            }
+            
+            lightbox.classList.remove('hidden');
+            document.body.classList.add('lightbox-active');
+        }
+        
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.getElementById('lightboxContent').innerHTML = '';
+            document.body.classList.remove('lightbox-active');
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        
+        // ============================================
+        // BOOKING
+        // ============================================
+        function submitBooking(e) {
+            e.preventDefault();
+            
+            const booking = {
+                id: Date.now(),
+                name: document.getElementById('bookName').value,
+                email: document.getElementById('bookEmail').value,
+                phone: document.getElementById('bookPhone').value,
+                occasion: document.getElementById('bookOccasion').value,
+                date: document.getElementById('bookDate').value,
+                guests: document.getElementById('bookGuests').value,
+                requests: document.getElementById('bookRequests').value,
+                status: 'Pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            const bookings = getData('hotelBookings');
+            bookings.unshift(booking);
+            setData('hotelBookings', bookings);
+            
+            document.getElementById('bookingForm').reset();
+            showToast('success', 'Booking Submitted!', 'We will contact you within 24 hours to confirm your reservation.');
+        }
+        
+        // ============================================
+        // ADMIN
+        // ============================================
+        function showAdminLogin() {
+            document.getElementById('adminLoginModal').classList.remove('hidden');
+            document.getElementById('adminPassword').focus();
+            document.getElementById('loginError').classList.add('hidden');
+        }
+        
+        function hideAdminLogin() {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+            document.getElementById('adminPassword').value = '';
+        }
+        
+        function togglePasswordVisibility() {
+            const input = document.getElementById('adminPassword');
+            const eye = document.getElementById('passwordEye');
+            if (input.type === 'password') {
+                input.type = 'text';
+                eye.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                eye.className = 'fas fa-eye';
+            }
+        }
+        
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === ADMIN_PASSWORD) {
+                hideAdminLogin();
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('customerView').classList.add('hidden');
+                document.getElementById('navbar').classList.add('hidden');
+                renderBookings();
+                renderMediaList();
+                renderStats();
+                showToast('success', 'Welcome, Admin!', 'You are now in the admin dashboard.');
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
+            }
+        }
+        
+        function logoutAdmin() {
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('customerView').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            showToast('info', 'Logged Out', 'You have been logged out of admin panel.');
+        }
+        
+        function switchAdminTab(tab) {
+            document.querySelectorAll('.admin-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('bg-white/5', 'text-gray-300');
+            });
+            
+            document.getElementById(`admin${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.remove('hidden');
+            const tabBtn = document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+            tabBtn.classList.add('tab-active');
+            tabBtn.classList.remove('bg-white/5', 'text-gray-300');
+            
+            if (tab === 'bookings') renderBookings();
+            if (tab === 'media') renderMediaList();
+            if (tab === 'stats') renderStats();
+        }
+        
+        // ============================================
+        // ADMIN - BOOKINGS
+        // ============================================
+        function renderBookings() {
+            const bookings = getData('hotelBookings');
+            const list = document.getElementById('bookingsList');
+            const empty = document.getElementById('noBookings');
+            const filterVal = document.getElementById('filterStatus').value;
+            
+            let filtered = bookings;
+            if (filterVal !== 'all') {
+                filtered = bookings.filter(b => b.status === filterVal);
+            }
+            
+            if (filtered.length === 0) {
+                list.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            
+            list.classList.remove('hidden');
+            empty.classList.add('hidden');
+            
+            list.innerHTML = filtered.map(b => {
+                const statusClass = b.status === 'Pending' ? 'status-badge-pending' : 
+                                   b.status === 'Confirmed' ? 'status-badge-confirmed' : 'status-badge-cancelled';
+                const statusIcon = b.status === 'Pending' ? 'clock' : 
+                                  b.status === 'Confirmed' ? 'check-circle' : 'times-circle';
+                                  
+                return `
+                    <div class="booking-card rounded-2xl p-6 animate-fade-in">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-full bg-[#c9a96e]/20 flex items-center justify-center">
+                                        <i class="fas fa-user text-[#c9a96e]"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">${b.name}</h4>
+                                        <p class="text-gray-400 text-sm">${b.email} | ${b.phone}</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+                                    <div class="bg-white/5 rounded-lg p-3">
+                                        <p class="text-gray-500 text-xs">Occasion</p>
+                                        <p class="text-sm font-medium text-[#c9a96e]">${b.occasion}</p>
+                                    </div>
+                                    <div class="bg-white/5 rounded-lg p-3">
+                                        <p class="text-gray-500 text-xs">Date</p>
+                                        <p class="text-sm font-medium">${new Date(b.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                                    </div>
+                                    <div class="bg-white/5 rounded-lg p-3">
+                                        <p class="text-gray-500 text-xs">Guests</p>
+                                        <p class="text-sm font-medium">${b.guests}</p>
+                                    </div>
+                                    <div class="bg-white/5 rounded-lg p-3">
+                                        <p class="text-gray-500 text-xs">Submitted</p>
+                                        <p class="text-sm font-medium">${new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                                    </div>
+                                </div>
+                                ${b.requests ? `<p class="mt-3 text-gray-400 text-sm"><i class="fas fa-comment text-[#c9a96e] mr-2"></i>${b.requests}</p>` : ''}
+                            </div>
+                            <div class="flex flex-col items-end gap-3">
+                                <span class="inline-flex items-center gap-1 px-4 py-1.5 rounded-full text-xs font-bold ${statusClass}">
+                                    <i class="fas fa-${statusIcon}"></i> ${b.status}
+                                </span>
+                                <div class="flex gap-2">
+                                    ${b.status !== 'Confirmed' ? `<button onclick="updateBookingStatus(${b.id}, 'Confirmed')" class="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg text-xs font-medium hover:bg-green-500/30 transition-colors"><i class="fas fa-check mr-1"></i>Confirm</button>` : ''}
+                                    ${b.status !== 'Cancelled' ? `<button onclick="updateBookingStatus(${b.id}, 'Cancelled')" class="px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-xs font-medium hover:bg-red-500/30 transition-colors"><i class="fas fa-times mr-1"></i>Cancel</button>` : ''}
+                                    <button onclick="deleteBooking(${b.id})" class="px-4 py-2 bg-white/5 text-gray-400 rounded-lg text-xs font-medium hover:bg-white/10 transition-colors"><i class="fas fa-trash mr-1"></i>Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function updateBookingStatus(id, status) {
+            const bookings = getData('hotelBookings');
+            const idx = bookings.findIndex(b => b.id === id);
+            if (idx !== -1) {
+                bookings[idx].status = status;
+                setData('hotelBookings', bookings);
+                renderBookings();
+                showToast('success', 'Status Updated', `Booking has been ${status.toLowerCase()}.`);
+            }
+        }
+        
+        function deleteBooking(id) {
+            if (confirm('Are you sure you want to delete this booking?')) {
+                const bookings = getData('hotelBookings').filter(b => b.id !== id);
+                setData('hotelBookings', bookings);
+                renderBookings();
+                showToast('info', 'Booking Deleted', 'The booking has been removed.');
+            }
+        }
+        
+        // ============================================
+        // ADMIN - MEDIA
+        // ============================================
+        document.getElementById('mediaType').addEventListener('change', function() {
+            const label = document.getElementById('mediaUrlLabel');
+            label.textContent = this.value === 'video' ? 'YouTube URL' : 'Image URL';
+        });
+        
+        function addMedia() {
+            const type = document.getElementById('mediaType').value;
+            const category = document.getElementById('mediaCategory').value;
+            const title = document.getElementById('mediaTitle').value.trim();
+            const url = document.getElementById('mediaUrl').value.trim();
+            const desc = document.getElementById('mediaDesc').value.trim();
+            
+            if (!title || !url) {
+                showToast('error', 'Missing Fields', 'Please provide a title and URL.');
+                return;
+            }
+            
+            const media = getData('hotelMedia');
+            media.unshift({
+                id: Date.now(),
+                type, category, title, url, desc,
+                date: new Date().toISOString()
+            });
+            setData('hotelMedia', media);
+            
+            document.getElementById('mediaTitle').value = '';
+            document.getElementById('mediaUrl').value = '';
+            document.getElementById('mediaDesc').value = '';
+            
+            renderMediaList();
+            renderGallery();
+            showToast('success', 'Media Added!', `"${title}" has been added to the gallery.`);
+        }
+        
+        function deleteMedia(id) {
+            if (confirm('Delete this media from the gallery?')) {
+                const media = getData('hotelMedia').filter(m => m.id !== id);
+                setData('hotelMedia', media);
+                renderMediaList();
+                renderGallery();
+                showToast('info', 'Media Deleted', 'The item has been removed from the gallery.');
+            }
+        }
+        
+        function renderMediaList() {
+            const media = getData('hotelMedia');
+            const list = document.getElementById('mediaList');
+            const empty = document.getElementById('noMedia');
+            const count = document.getElementById('mediaCount');
+            
+            count.textContent = media.length;
+            
+            if (media.length === 0) {
+                list.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            
+            list.classList.remove('hidden');
+            empty.classList.add('hidden');
+            
+            list.innerHTML = media.map(item => {
+                const isVideo = item.type === 'video';
+                const videoId = isVideo ? extractYoutubeId(item.url) : null;
+                const thumbnail = isVideo && videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : item.url;
+                
+                return `
+                    <div class="booking-card rounded-xl overflow-hidden">
+                        <div class="h-40 relative overflow-hidden">
+                            <img src="${thumbnail}" class="w-full h-full object-cover" alt="${item.title}">
+                            ${isVideo ? '<div class="absolute inset-0 flex items-center justify-center"><div class="w-12 h-12 rounded-full bg-[#c9a96e]/90 flex items-center justify-center"><i class="fas fa-play text-[#1a1a2e] ml-0.5"></i></div></div>' : ''}
+                            <span class="absolute top-2 left-2 px-2 py-1 bg-black/60 text-[#c9a96e] rounded text-xs capitalize">
+                                ${isVideo ? '<i class="fas fa-video mr-1"></i>Video' : '<i class="fas fa-image mr-1"></i>' + item.category}
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-sm mb-1">${item.title}</h4>
+                            <p class="text-gray-500 text-xs mb-3">${item.desc || 'No description'}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-500 text-xs">${new Date(item.date).toLocaleDateString()}</span>
+                                <button onclick="deleteMedia(${item.id})" class="text-red-400 hover:text-red-300 text-xs transition-colors">
+                                    <i class="fas fa-trash mr-1"></i>Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ============================================
+        // ADMIN - STATS
+        // ============================================
+        function renderStats() {
+            const bookings = getData('hotelBookings');
+            const media = getData('hotelMedia');
+            
+            document.getElementById('statTotal').textContent = bookings.length;
+            document.getElementById('statPending').textContent = bookings.filter(b => b.status === 'Pending').length;
+            document.getElementById('statConfirmed').textContent = bookings.filter(b => b.status === 'Confirmed').length;
+            document.getElementById('statMedia').textContent = media.length;
+            
+            // Occasion breakdown
+            const occasions = {};
+            bookings.forEach(b => {
+                occasions[b.occasion] = (occasions[b.occasion] || 0) + 1;
+            });
+            
+            const breakdown = document.getElementById('occasionBreakdown');
+            const total = bookings.length || 1;
+            const colors = ['#c9a96e', '#f0d78c', '#34d399', '#60a5fa', '#f87171', '#a78bfa'];
+            
+            if (Object.keys(occasions).length === 0) {
+                breakdown.innerHTML = '<p class="text-gray-400 text-center py-8">No booking data available yet.</p>';
+                return;
+            }
+            
+            breakdown.innerHTML = Object.entries(occasions).map(([occasion, count], i) => {
+                const percent = Math.round((count / total) * 100);
+                const color = colors[i % colors.length];
+                return `
+                    <div class="flex items-center gap-4">
+                        <div class="w-32 text-sm text-gray-300 flex-shrink-0">${occasion}</div>
+                        <div class="flex-1 bg-white/5 rounded-full h-6 overflow-hidden">
+                            <div class="h-full rounded-full flex items-center px-3 text-xs font-bold text-[#1a1a2e] transition-all duration-1000" 
+                                style="width: ${percent}%; background: ${color}; min-width: 40px;">
+                                ${count}
+                            </div>
+                        </div>
+                        <div class="w-12 text-right text-sm text-gray-400">${percent}%</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // ============================================
+        // TOAST NOTIFICATIONS
+        // ============================================
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const icons = { success: 'check-circle', error: 'exclamation-circle', info: 'info-circle' };
+            const colors = { success: 'green', error: 'red', info: 'blue' };
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast booking-card rounded-xl p-4 flex items-start gap-3 max-w-sm shadow-2xl';
+            toast.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-${colors[type]}-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <i class="fas fa-${icons[type]} text-${colors[type]}-400"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="font-semibold text-sm">${title}</p>
+                    <p class="text-gray-400 text-xs mt-1">${message}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-gray-500 hover:text-white flex-shrink-0">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+        
+        // ============================================
+        // SET MIN DATE FOR BOOKING
+        // ============================================
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('bookDate').setAttribute('min', today);
+        
+        // ============================================
+        // INITIAL RENDER
+        // ============================================
+        renderGallery();
+        
+        // ============================================
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        // ============================================
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.occasion-card, .stat-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
